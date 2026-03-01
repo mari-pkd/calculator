@@ -62,6 +62,7 @@ function clearString(string){
     return string.join("");
 }
 
+
 function compute(nums) {
     //find last operator in string
     nums = nums.split("");
@@ -82,7 +83,6 @@ function compute(nums) {
 
 buttons.addEventListener("click", (event) => {
     let target = event.target;
-    
     
     if (target.id == "equal") {
         compute(nums);
