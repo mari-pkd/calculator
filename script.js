@@ -4,7 +4,7 @@ const validOperators = ["+", "-", "*", "/", "^"];
 const buttons = document.querySelector(".buttons");
 const display = document.querySelector(".display");
 
-let nums = [];
+let nums = "";
 let numFirst = "";
 let operator = "";
 let numSecond = "";
@@ -49,25 +49,48 @@ function operate(a, operator, b) {
     }
 }
 
-function splitNums(nums) {
+function clearAll() {
+    nums = "";
+    numFirst = "";
+    operator = "";
+    numSecond = "";
+}
+
+function clearString(string){
+    if (string.at(-1) == "-") string.pop();
+    string.join("").replace(/[^0-9.-]/g, "");
+    return string.join("");
+}
+
+function compute(nums) {
+    //find last operator in string
+    nums = nums.split("");
     let operatorIndex = nums.findLastIndex((operator) => {
         return validOperators.includes(operator);
     })
-    numFirst += nums.slice(0, operatorIndex).join("");
-    numSecond += nums.slice(++operatorIndex).join("");
+
+    //fill variables
+    numFirst = clearString(nums.slice(0, operatorIndex));
+    numSecond = clearString(nums.slice(++operatorIndex));
     operator = nums[--operatorIndex];
+
+    //perform math with failsafes
     operate(+numFirst, operator, +numSecond);
-    display.value = numFirst;
-    console.log(numFirst);
+    if (operatorIndex == -1 || numSecond == undefined) 
+        numFirst = +(nums.join(""));
 }
 
 buttons.addEventListener("click", (event) => {
     let target = event.target;
+    
+    
     if (target.id == "equal") {
-        splitNums(nums);
+        compute(nums);
+        display.value = numFirst;
+        clearAll();
     } else
-        {nums.push(target.textContent);
-        display.value = nums.join("");
+        {nums += target.textContent;
+        display.value = nums;
         console.log(nums);}
 
 
