@@ -2,6 +2,9 @@ const validNumbers = "1234567890.";
 const validOperators = ["+", "-", "*", "/", "^"];
 
 const buttons = document.querySelector(".buttons");
+const numbers = document.querySelector(".numbers");
+const operators = document.querySelector(".operators");
+
 const display = document.querySelector(".display");
 
 let nums = "";
@@ -59,16 +62,30 @@ function clearAll() {
 function clearString(string){
     if (string.at(-1) == "-") string.pop();
     string.join("").replace(/[^0-9.-]/g, "");
+    console.log(string);
     return string.join("");
 }
 
+function getOperatorIndex(nums) {
+    let mulDivPower = ["*", "/", "^"];
+    let isMulDivPower = nums.some(operator => 
+        mulDivPower.includes(operator));
+
+    if (isMulDivPower == true) {
+        return operatorIndex = nums.findLastIndex((operator) => {
+        return mulDivPower.includes(operator);
+        })
+    } else {
+        return operatorIndex = nums.findLastIndex((operator) => {
+        return validOperators.includes(operator);
+        })
+    }
+}
 
 function compute(nums) {
-    //find last operator in string
+    //find operator
     nums = nums.split("");
-    let operatorIndex = nums.findLastIndex((operator) => {
-        return validOperators.includes(operator);
-    })
+    let operatorIndex = getOperatorIndex(nums);
 
     //fill variables
     numFirst = clearString(nums.slice(0, operatorIndex));
@@ -87,6 +104,7 @@ buttons.addEventListener("click", (event) => {
     if (target.id == "equal") {
         compute(nums);
         display.value = numFirst;
+        console.log(numFirst, numSecond, operator);
         clearAll();
     } else
         {nums += target.textContent;
