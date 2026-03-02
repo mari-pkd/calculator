@@ -4,6 +4,7 @@ const validOperators = ["+", "-", "*", "/", "^"];
 const buttons = document.querySelector(".buttons");
 const numbers = document.querySelector(".numbers");
 const operators = document.querySelector(".operators");
+const final = document.querySelector(".final");
 
 const display = document.querySelector(".display");
 
@@ -60,7 +61,9 @@ function clearAll() {
 }
 
 function clearString(string){
-    if (string.at(-1) == "-") string.pop();
+    if (string.at(-1) 
+        == string.find(operator => validOperators.includes(operator))) 
+        string.pop();
     string.join("").replace(/[^0-9.-]/g, "");
     console.log(string);
     return string.join("");
@@ -95,22 +98,38 @@ function compute(nums) {
     //perform math with failsafes
     operate(+numFirst, operator, +numSecond);
     if (operatorIndex == -1 || numSecond == undefined) 
-        numFirst = +(nums.join(""));
+        numFirst = Math.round(+(nums.join("")) * 100) / 100;
 }
 
-buttons.addEventListener("click", (event) => {
+numbers.addEventListener("click", (event) => {
     let target = event.target;
-    
-    if (target.id == "equal") {
+    nums += target.textContent;
+    display.value = nums;
+})
+
+operators.addEventListener("click", (event) => {
+    let target = event.target;
+    let numCheck = nums.slice(1, --nums.length).split('');
+    if (numCheck.find(operator => validOperators.includes(operator))) {
         compute(nums);
         display.value = numFirst;
-        console.log(numFirst, numSecond, operator);
         clearAll();
-    } else
-        {nums += target.textContent;
-        display.value = nums;
-        console.log(nums);}
+        nums = display.value;
+    }
+    nums += target.textContent;
+    display.value = nums;
+})
 
-
-
+final.addEventListener("click", (event) => {
+    let target = event.target;
+    switch (target.id) {
+        case "equal":
+            compute(nums);
+            display.value = numFirst;
+            clearAll();
+            break;
+        case "clear":
+            clearAll();
+            display.value = null;
+    }
 })
