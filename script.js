@@ -5,6 +5,7 @@ const buttons = document.querySelector(".buttons");
 const numbers = document.querySelector(".numbers");
 const operators = document.querySelector(".operators");
 const final = document.querySelector(".final");
+let float = document.querySelector("#dot");
 
 const display = document.querySelector(".display");
 
@@ -59,6 +60,7 @@ function clearAll() {
     numFirst = "";
     operator = "";
     numSecond = "";
+    float.disabled = false;
 }
 
 function clearString(string){
@@ -108,8 +110,17 @@ function compute(nums) {
 
 numbers.addEventListener("click", (event) => {
     let target = event.target;
+
     nums += target.textContent;
     display.value = nums;
+
+    if (nums.includes(".")) float.disabled = true;
+    if (nums.includes(".") && validOperators.find((operator) => nums.includes(operator)) ) {
+        let operCheck = nums.split('');
+        (nums.lastIndexOf(".") < getOperatorIndex(operCheck)) ? 
+        float.disabled = false : float.disabled = true;
+    }
+    
 })
 
 operators.addEventListener("click", (event) => {
