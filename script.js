@@ -51,6 +51,7 @@ function operate(a, operator, b) {
         case "^":
             toPower(a, b);
     }
+    return numFirst = Math.round(numFirst * 100) / 100;
 }
 
 function clearAll() {
@@ -99,6 +100,10 @@ function compute(nums) {
     operate(+numFirst, operator, +numSecond);
     if (operatorIndex == -1 || numSecond == undefined) 
         numFirst = Math.round(+(nums.join("")) * 100) / 100;
+    if (operator == "/" && numSecond == 0) {
+        alert("Cannot divide by 0.");
+        clearAll();
+    }
 }
 
 numbers.addEventListener("click", (event) => {
@@ -131,5 +136,9 @@ final.addEventListener("click", (event) => {
         case "clear":
             clearAll();
             display.value = null;
+            break;
+        case "backspace":
+            nums = nums.slice(0, --nums.length);
+            display.value = nums;
     }
 })
