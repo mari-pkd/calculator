@@ -165,10 +165,8 @@ final.addEventListener("click", (event) => {
 })
 
 input.addEventListener("keydown", (event) => {
-    //had to specify 9 separately for the numpad ?? might be an issue with my keyboard
-
     if (event.keyCode >= 48 && event.keyCode <= 56 
-        || event.keyCode >= 96 && event.keyCode <= 105 || event.key == "9") {
+        || event.keyCode >= 96 && event.keyCode <= 105) {
         nums += `${event.key}`;
         display.textContent = nums;
     } else if (event.key == "." && float.disabled == false) {
