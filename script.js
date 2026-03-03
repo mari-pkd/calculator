@@ -5,7 +5,8 @@ const buttons = document.querySelector(".buttons");
 const numbers = document.querySelector(".numbers");
 const operators = document.querySelector(".operators");
 const final = document.querySelector(".final");
-let float = document.querySelector("#dot");
+const float = document.querySelector("#dot");
+const input = document.querySelector(".input");
 
 const display = document.querySelector(".display");
 
@@ -14,7 +15,7 @@ let numFirst = "";
 let operator = "";
 let numSecond = "";
 
-
+//computing functions
 function add(a, b) {
     return numFirst = a + b;
 }
@@ -55,23 +56,6 @@ function operate(a, operator, b) {
     return numFirst = Math.round(numFirst * 100) / 100;
 }
 
-function clearAll() {
-    nums = "";
-    numFirst = "";
-    operator = "";
-    numSecond = "";
-    float.disabled = false;
-}
-
-function clearString(string){
-    if (string.at(-1) 
-        == string.find(operator => validOperators.includes(operator))) 
-        string.pop();
-    string.join("").replace(/[^0-9.-]/g, "");
-    console.log(string);
-    return string.join("");
-}
-
 function getOperatorIndex(nums) {
     let mulDivPower = ["*", "/", "^"];
     let isMulDivPower = nums.some(operator => 
@@ -108,23 +92,17 @@ function compute(nums) {
     }
 }
 
-numbers.addEventListener("click", (event) => {
-    let target = event.target;
-
-    nums += target.textContent;
-    display.value = nums;
-
+//input functions
+function toggleFloat() {
     if (nums.includes(".")) float.disabled = true;
     if (nums.includes(".") && validOperators.find((operator) => nums.includes(operator)) ) {
         let operCheck = nums.split('');
         (nums.lastIndexOf(".") < getOperatorIndex(operCheck)) ? 
         float.disabled = false : float.disabled = true;
     }
-    
-})
+}
 
-operators.addEventListener("click", (event) => {
-    let target = event.target;
+function checkOperators() {
     let numCheck = nums.slice(1, --nums.length).split('');
     if (numCheck.find(operator => validOperators.includes(operator))) {
         compute(nums);
@@ -132,8 +110,40 @@ operators.addEventListener("click", (event) => {
         clearAll();
         nums = display.value;
     }
+}
+
+function clearString(string){
+    if (string.at(-1) 
+        == string.find(operator => validOperators.includes(operator))) 
+        string.pop();
+    string.join("").replace(/[^0-9.-]/g, "");
+    console.log(string);
+    return string.join("");
+}
+
+function clearAll() {
+    nums = "";
+    numFirst = "";
+    operator = "";
+    numSecond = "";
+    float.disabled = false;
+}
+
+//event listeners
+numbers.addEventListener("click", (event) => {
+    let target = event.target;
+
     nums += target.textContent;
-    display.value = nums;
+    display.textContent = nums;
+    toggleFloat();
+    
+})
+
+operators.addEventListener("click", (event) => {
+    let target = event.target;
+    checkOperators();
+    nums += target.textContent;
+    display.textContent = nums;
 })
 
 final.addEventListener("click", (event) => {
@@ -141,15 +151,52 @@ final.addEventListener("click", (event) => {
     switch (target.id) {
         case "equal":
             compute(nums);
-            display.value = numFirst;
+            display.textContent = numFirst;
             clearAll();
             break;
         case "clear":
             clearAll();
-            display.value = null;
+            display.textContent = null;
             break;
         case "backspace":
             nums = nums.slice(0, --nums.length);
-            display.value = nums;
+            display.textContent = nums;
     }
+})
+
+input.addEventListener("keydown", (event) => {
+    //had to specify 9 separately for the numpad ?? might be an issue with my keyboard
+
+    if (event.keyCode >= 48 && event.keyCode <= 56 
+        || event.keyCode >= 96 && event.keyCode <= 105 || event.key == "9") {
+        nums += `${event.key}`;
+        display.textContent = nums;
+    } else if (event.key == "." && float.disabled == false) {
+        nums += `${event.key}`;
+        display.textContent = nums;
+        toggleFloat();
+    } else if (event.code == "Backspace") {
+                nums = nums.slice(0, --nums.length);
+                console.log(nums);
+                display.textContent = nums;
+        } else {       
+            switch(event.code) {
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                case "^":
+                    checkOperators();
+                    nums += `${event.key}`;
+                    display.textContent = nums;
+                    break;
+                case "=":
+                    compute(nums);
+                    display.textContent = numFirst;
+                    clearAll();
+                case "Enter":
+                    clearAll();
+        } 
+    }
+    
 })
