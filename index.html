@@ -4,14 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
-    <link rel="styleshee" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <form><input class="input"></form>
-    <div class="display"></div>
-    <div class="buttons">
-        <div class="numbers">
+    <div class="header">
+        <h1>Calculator</h1>
+        <div class="header-text">
+            <p>This is a calculator that rounds decimals up to 1.01.</p>
+            <p>Keyboard supported! Press enter to clear.</p>
+            <p>The Odin Project | 2026</p>
+        </div>
+    </div>
+    
+    <div class="body">
+        <div class="window">
+            <input class="input">
+            <div class="display"></div>
+        </div>
+        <div class="buttons">
+        <div class="pad">
+            <span class="numbers">
             <button class="number" id="one">1</button>
             <button class="number" id="two">2</button>
             <button class="number" id="three">3</button>
@@ -23,19 +36,23 @@
             <button class="number" id="nine">9</button>
             <button class="number" id="zero">0</button>
             <button class="number" id="dot">.</button>
+            </span>
         </div>
-        <div class="operators">
+        <div class="sidebar">
+        <span class="operators">
             <button class="operator" id="plus">+</button>
             <button class="operator" id="minus">-</button>
             <button class="operator" id="mult">*</button>
             <button class="operator" id="divide">/</button>
             <button class="operator" id="power">^</button>
-        </div>
-        <div class="final">
+        </span>
+        <span class="final">
             <button id="equal">=</button>
             <button id="clear">clear</button>
             <button id="backspace">backspace</button>
+        </span>
         </div>
+    </div>
     </div>
 </body>
 </html>

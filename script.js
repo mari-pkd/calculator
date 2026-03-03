@@ -1,12 +1,12 @@
 const validNumbers = "1234567890.";
 const validOperators = ["+", "-", "*", "/", "^"];
 
-const buttons = document.querySelector(".buttons");
 const numbers = document.querySelector(".numbers");
 const operators = document.querySelector(".operators");
 const final = document.querySelector(".final");
-const float = document.querySelector("#dot");
 const input = document.querySelector(".input");
+const float = document.querySelector("#dot");
+
 
 const display = document.querySelector(".display");
 
@@ -173,12 +173,8 @@ input.addEventListener("keydown", (event) => {
         nums += `${event.key}`;
         display.textContent = nums;
         toggleFloat();
-    } else if (event.code == "Backspace") {
-                nums = nums.slice(0, --nums.length);
-                console.log(nums);
-                display.textContent = nums;
-        } else {       
-            switch(event.code) {
+    } else {       
+            switch(event.key) {
                 case "+":
                 case "-":
                 case "*":
@@ -192,8 +188,13 @@ input.addEventListener("keydown", (event) => {
                     compute(nums);
                     display.textContent = numFirst;
                     clearAll();
+                    break;
                 case "Enter":
                     clearAll();
+                    break;
+                case "Backspace":
+                    nums = nums.slice(0, --nums.length);
+                    display.textContent = nums;
         } 
     }
     
